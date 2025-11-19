@@ -1,0 +1,11 @@
+[
+  { "id": 1, "text": "시간 계획을 세우는가?", "reverse": false, "category": "planning" },
+  { "id": 2, "text": "계획을 메모하는가?", "reverse": false, "category": "planning" },
+  { "id": 3, "text": "하루에 계획한 일을 모두 완수하는가?", "reverse": false, "category": "execution" },
+  { "id": 4, "text": "급해 보이는 과제로 인해 방해를 받는가?", "reverse": true, "category": "distraction" },
+  { "id": 5, "text": "끝내지 않은 일을 남겨 놓는가?", "reverse": true, "category": "execution" },
+  { "id": 6, "text": "무엇을 하고 있었는지 잊어버리는가?", "reverse": true, "category": "memory" },
+  { "id": 7, "text": "정시에 도착하여 약속에 대비하는가?", "reverse": false, "category": "punctuality" },
+  { "id": 8, "text": "몇 시인지 대충 아는가?", "reverse": false, "category": "awareness" },
+  { "id": 9, "text": "시간을 낭비하고 있다는 생각이 드는가?", "reverse": true, "category": "efficiency" }
+]
