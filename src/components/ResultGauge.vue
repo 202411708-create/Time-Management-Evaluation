@@ -5,27 +5,25 @@
         <div
           class="gauge-fill"
           :style="{
-            width: `${gaugePercentage}%`,
+            width: `${interpretation.percentage}%`,
             backgroundColor: gaugeColor
           }"
         ></div>
       </div>
       <div class="gauge-markers">
-        <span>0</span>
-        <span>9</span>
-        <span>18</span>
-        <span>27</span>
-        <span>36</span>
+        <span>0%</span>
+        <span>25%</span>
+        <span>50%</span>
+        <span>75%</span>
+        <span>100%</span>
       </div>
     </div>
     <div class="score-display">
-      <span class="score-value" :style="{ color: gaugeColor }">{{ score }}</span>
-      <span class="score-label">점</span>
+      <span class="score-value" :style="{ color: gaugeColor }">{{ interpretation.percentage }}</span>
+      <span class="score-label">%</span>
     </div>
-    <div class="interpretation">
-      <span class="level-badge" :style="{ backgroundColor: gaugeColor }">
-        {{ interpretation.label }}
-      </span>
+    <div class="score-raw">
+      <span>{{ score }} / 36점</span>
     </div>
   </div>
 </template>
@@ -42,10 +40,6 @@ const props = defineProps({
 });
 
 const interpretation = computed(() => getScoreInterpretation(props.score));
-
-const gaugePercentage = computed(() => {
-  return Math.min((props.score / 36) * 100, 100);
-});
 
 const gaugeColor = computed(() => interpretation.value.color);
 </script>
@@ -99,16 +93,10 @@ const gaugeColor = computed(() => interpretation.value.color);
   margin-left: 4px;
 }
 
-.interpretation {
-  margin-top: var(--spacing-sm);
-}
-
-.level-badge {
-  display: inline-block;
-  padding: var(--spacing-xs) var(--spacing-sm);
-  border-radius: var(--border-radius);
-  color: var(--color-white);
+.score-raw {
+  margin-top: var(--spacing-xs);
   font-size: 0.875rem;
-  font-weight: 400;
+  color: var(--color-text);
+  opacity: 0.6;
 }
 </style>

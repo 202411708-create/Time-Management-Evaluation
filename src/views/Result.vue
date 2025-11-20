@@ -6,10 +6,6 @@
       <div v-if="isLoaded">
         <ResultGauge :score="totalScore" />
 
-        <div class="description card">
-          <p>{{ interpretation.description }}</p>
-        </div>
-
         <TimeTypeCard :time-type="timeType" />
 
         <div class="chart-section card">
@@ -40,7 +36,6 @@ import StrengthWeakness from '../components/StrengthWeakness.vue';
 import surveyItems from '../data/surveyItems.json';
 import {
   calculateScore,
-  getScoreInterpretation,
   getTimeType,
   getRadarData,
   getStrengthWeakness
@@ -70,10 +65,6 @@ const totalScore = computed(() => {
   return calculateScore(responses.value, surveyItems);
 });
 
-const interpretation = computed(() => {
-  return getScoreInterpretation(totalScore.value);
-});
-
 const timeType = computed(() => {
   return getTimeType(responses.value, surveyItems);
 });
@@ -100,16 +91,6 @@ function retryTest() {
 .result-title {
   text-align: center;
   margin-bottom: var(--spacing-md);
-}
-
-.description {
-  text-align: center;
-  margin-top: var(--spacing-md);
-}
-
-.description p {
-  font-size: 0.9rem;
-  line-height: 1.6;
 }
 
 .chart-section {

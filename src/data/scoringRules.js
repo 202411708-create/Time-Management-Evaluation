@@ -8,43 +8,30 @@ export function calculateScore(responses, items) {
 }
 
 // 점수별 해석 (총점 0-36점, 낮을수록 좋음)
+// 측정 중심 결과 - 평가 레이블 제거
 export function getScoreInterpretation(score) {
-  if (score <= 10) {
-    return {
-      level: 'excellent',
-      label: '매우 우수',
-      description: '시간 관리 능력이 매우 뛰어납니다. 계획적이고 효율적인 생활을 하고 있습니다.',
-      color: '#8A8F7A'
-    };
-  } else if (score <= 18) {
-    return {
-      level: 'good',
-      label: '우수',
-      description: '시간 관리를 잘 하고 있습니다. 조금만 더 노력하면 완벽해질 수 있습니다.',
-      color: '#A3B86C'
-    };
-  } else if (score <= 26) {
-    return {
-      level: 'average',
-      label: '보통',
-      description: '평균적인 시간 관리 수준입니다. 계획을 세우고 실천하는 습관을 길러보세요.',
-      color: '#E8A849'
-    };
-  } else if (score <= 33) {
-    return {
-      level: 'needs-improvement',
-      label: '개선 필요',
-      description: '시간 관리에 어려움이 있습니다. 작은 목표부터 시작해 보세요.',
-      color: '#D97B4A'
-    };
+  // 백분위 계산 (낮은 점수가 좋으므로 역순)
+  const percentage = Math.round(((36 - score) / 36) * 100);
+
+  // 색상은 백분위 기준
+  let color;
+  if (percentage >= 70) {
+    color = '#8A8F7A';
+  } else if (percentage >= 50) {
+    color = '#A3B86C';
+  } else if (percentage >= 30) {
+    color = '#E8A849';
+  } else if (percentage >= 15) {
+    color = '#D97B4A';
   } else {
-    return {
-      level: 'difficulty',
-      label: '어려움 있음',
-      description: '시간 관리에 많은 어려움을 겪고 있습니다. 체계적인 도움이 필요할 수 있습니다.',
-      color: '#C45B4D'
-    };
+    color = '#C45B4D';
   }
+
+  return {
+    score,
+    percentage,
+    color
+  };
 }
 
 // 시간 유형 결정
