@@ -1,11 +1,9 @@
 // 점수 계산 함수 (0-4점 체계)
-// 역채점 항목: 4, 5, 6, 9번 (reverse: true)
-// 낮은 점수가 좋은 것
+// 역채점 항목(4, 5, 6, 9번)은 슬라이더에서 이미 반전 처리됨
+// 선택한 점수를 그대로 합산
 export function calculateScore(responses, items) {
-  return responses.reduce((sum, value, index) => {
-    const reverse = items[index].reverse;
-    // 역채점: 4 - value
-    return sum + (reverse ? 4 - value : value);
+  return responses.reduce((sum, value) => {
+    return sum + value;
   }, 0);
 }
 
@@ -63,9 +61,8 @@ export function getTimeType(responses, items) {
 
   responses.forEach((value, index) => {
     const item = items[index];
-    // 역채점 적용
-    const score = item.reverse ? 4 - value : value;
-    categoryScores[item.category].total += score;
+    // 슬라이더에서 이미 역채점 처리됨, 그대로 사용
+    categoryScores[item.category].total += value;
     categoryScores[item.category].count += 1;
   });
 
@@ -124,10 +121,9 @@ export function getRadarData(responses, items) {
 
   responses.forEach((value, index) => {
     const item = items[index];
-    // 역채점 적용
-    const score = item.reverse ? 4 - value : value;
+    // 슬라이더에서 이미 역채점 처리됨, 그대로 사용
     // 100점 만점으로 변환 (높을수록 좋음 = 낮은 점수일수록 좋음)
-    const normalizedScore = ((4 - score) / 4) * 100;
+    const normalizedScore = ((4 - value) / 4) * 100;
     const categoryName = categoryMapping[item.category];
     categories[categoryName].push(normalizedScore);
   });
@@ -143,16 +139,16 @@ export function getRadarData(responses, items) {
 // 항목별 바 차트 데이터 생성
 export function getBarChartData(responses, items) {
   return items.map((item, index) => {
-    const rawValue = responses[index];
-    const score = item.reverse ? 4 - rawValue : rawValue;
+    const value = responses[index];
+    // 슬라이더에서 이미 역채점 처리됨, 그대로 사용
     // 100점 만점 변환 (높을수록 좋음)
-    const normalizedScore = ((4 - score) / 4) * 100;
+    const normalizedScore = ((4 - value) / 4) * 100;
 
     return {
       id: item.id,
       text: item.text,
-      rawScore: rawValue,
-      adjustedScore: score,
+      rawScore: value,
+      adjustedScore: value,
       percentage: normalizedScore,
       isReverse: item.reverse
     };

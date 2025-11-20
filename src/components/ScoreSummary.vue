@@ -44,9 +44,8 @@ const props = defineProps({
 });
 
 function getItemScore(index) {
-  const item = props.items[index];
-  const value = props.responses[index];
-  return item.reverse ? 4 - value : value;
+  // 슬라이더에서 이미 역채점 처리됨, 그대로 사용
+  return props.responses[index];
 }
 
 function getPercentage(index) {

@@ -5,8 +5,8 @@
 
     <div class="slider-container">
       <div class="slider-labels">
-        <span class="label-left">{{ item.reverse ? '전혀 (0점)' : '전혀 (4점)' }}</span>
-        <span class="label-right">{{ item.reverse ? '매우 (4점)' : '매우 (0점)' }}</span>
+        <span class="label-left">{{ item.reverse ? '전혀 (4점)' : '전혀 (0점)' }}</span>
+        <span class="label-right">{{ item.reverse ? '매우 (0점)' : '매우 (4점)' }}</span>
       </div>
 
       <div class="slider-wrapper">
@@ -61,17 +61,24 @@ const props = defineProps({
   }
 });
 
+// 역채점 항목 여부
+const isReverse = computed(() => props.item.reverse);
+
 const emit = defineEmits(['update:modelValue']);
 
 // 슬라이더 위치 값 (0-4)
+// 일반 문항: 왼쪽 0점 → 오른쪽 4점
+// 역채점 문항: 왼쪽 4점 → 오른쪽 0점
 const sliderValue = computed(() => {
   if (props.modelValue === null) return 2;
-  // 역채점: 슬라이더 값 = 점수 그대로
-  // 일반: 슬라이더 값 = 4 - 점수
-  return props.item.reverse ? props.modelValue : 4 - props.modelValue;
+  // 역채점 항목은 슬라이더 위치를 반전
+  if (isReverse.value) {
+    return 4 - props.modelValue;
+  }
+  return props.modelValue;
 });
 
-// 표시할 점수
+// 표시할 점수 (실제 저장되는 점수)
 const displayValue = computed(() => props.modelValue ?? 2);
 
 const fillPercentage = computed(() => {
@@ -79,17 +86,19 @@ const fillPercentage = computed(() => {
 });
 
 // 눈금 점수 계산
+// 일반 문항: 왼쪽 0, 오른쪽 4
+// 역채점 문항: 왼쪽 4, 오른쪽 0
 function getTickScore(sliderPos) {
-  // 역채점: 왼쪽 0, 오른쪽 4
-  // 일반: 왼쪽 4, 오른쪽 0
-  return props.item.reverse ? sliderPos : 4 - sliderPos;
+  if (isReverse.value) {
+    return 4 - sliderPos;
+  }
+  return sliderPos;
 }
 
 function onSliderChange(event) {
   const sliderPos = parseInt(event.target.value);
-  // 역채점: 점수 = 슬라이더 값 그대로
-  // 일반: 점수 = 4 - 슬라이더 값
-  const score = props.item.reverse ? sliderPos : 4 - sliderPos;
+  // 역채점 항목은 슬라이더 위치를 반전하여 실제 점수로 변환
+  const score = isReverse.value ? 4 - sliderPos : sliderPos;
   emit('update:modelValue', score);
 }
 </script>
